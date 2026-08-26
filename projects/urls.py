@@ -4,6 +4,7 @@ from .views import (
     ProjectDetailView,
     ProjectListCreateView,
     ProjectMemberListCreateView,
+    ProjectMemberDetailView,
 )
 
 

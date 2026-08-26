@@ -74,6 +74,21 @@ async function loadProjectOptions() {
 
         }
 
+        if (projectSelect && projects.length > 0) {
+
+    const firstProjectId =
+        projectSelect.value ||
+        projects[0].id;
+
+    projectSelect.value =
+        firstProjectId;
+
+    await populateTaskAssignees(
+        firstProjectId,
+        "task-assignee"
+    );
+}
+
 
         // -------------------------
         // Board Project Dropdown
@@ -162,6 +177,124 @@ async function loadProjectOptions() {
     }
 
 }
+
+const taskProjectSelect =
+    document.getElementById("task-project");
+
+if (taskProjectSelect) {
+
+    taskProjectSelect.addEventListener(
+        "change",
+        async () => {
+
+            await populateTaskAssignees(
+                taskProjectSelect.value,
+                "task-assignee"
+            );
+        }
+    );
+}
+
+async function loadProjectMembers(projectId) {
+
+    const response = await fetch(
+        "/api/projects/members/"
+    );
+
+    if (!response.ok) {
+        throw new Error(
+            "Failed to load project members."
+        );
+    }
+
+    const members =
+        await response.json();
+
+   
+        return members.filter(
+        member =>
+            Number(member.project) ===
+            Number(projectId)
+    );
+}
+
+
+async function populateTaskAssignees(
+    projectId,
+    selectId,
+    selectedUserId = null
+) {
+
+    const select =
+        document.getElementById(selectId);
+
+    if (!select) {
+        return;
+    }
+
+    select.innerHTML = `
+        <option value="">
+            Select team member
+        </option>
+    `;
+
+    if (!projectId) {
+        return;
+    }
+
+    try {
+
+        const members =
+            await loadProjectMembers(projectId);
+
+        if (members.length === 0) {
+
+            select.innerHTML = `
+                <option value="">
+                    No team members assigned
+                </option>
+            `;
+
+            return;
+        }
+
+        members.forEach(member => {
+
+            const option =
+                document.createElement("option");
+
+            option.value =
+                member.user;
+
+            option.textContent =
+                member.username;
+
+            if (
+                selectedUserId &&
+                Number(selectedUserId) ===
+                Number(member.user)
+            ) {
+                option.selected = true;
+            }
+
+            select.appendChild(option);
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Task assignee loading error:",
+            error
+        );
+
+        select.innerHTML = `
+            <option value="">
+                Unable to load team members
+            </option>
+        `;
+    }
+}
+
 // Board Project Selector
 
 const boardProjectSelect =
@@ -1007,8 +1140,7 @@ const cancelTaskDetailsButton = document.getElementById(
 let selectedTaskId = null;
 
 
-function openTaskDetails(task) {
-
+async function openTaskDetails(task) {
     if (!taskDetailsModal) {
         console.error("Task details modal not found.");
         return;
@@ -1037,15 +1169,18 @@ function openTaskDetails(task) {
     ).value = task.status || "todo";
 
     document.getElementById(
-        "details-priority"
-    ).value = task.priority || "medium";
+    "details-priority"
+).value = task.priority || "medium";
 
-    document.getElementById(
-        "details-assignee"
-    ).value = task.assigned_to || "";
+await populateTaskAssignees(
+    task.project,
+    "details-assignee",
+    task.assigned_to
+);
 
-    taskDetailsModal.classList.add("show");
-    loadTaskComments(task.id);
+taskDetailsModal.classList.add("show");
+
+loadTaskComments(task.id);
 }
 
 async function loadTaskComments(taskId) {
@@ -1749,122 +1884,232 @@ if (projectForm) {
                 // ==================================
 
                 if (
-                    isEditing &&
-                    editingProjectId
-                ) {
+    isEditing &&
+    editingProjectId
+) {
 
-                    const response =
-                        await fetch(
-                            `/api/projects/${editingProjectId}/`,
-                            {
-                                method: "PATCH",
+    const response = await fetch(
+        `/api/projects/${editingProjectId}/`,
+        {
+            method: "PATCH",
 
-                                headers: {
-                                    "Content-Type":
-                                        "application/json",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
 
-                                    "X-CSRFToken":
-                                        csrftoken
-                                },
-
-                                body:
-                                    JSON.stringify(
-                                        projectData
-                                    )
-                            }
-                        );
+            body: JSON.stringify(projectData)
+        }
+    );
 
 
-                    if (!response.ok) {
+    if (!response.ok) {
 
-                        const errorData =
-                            await response.json();
+        const errorData =
+            await response.json();
 
-                        console.error(
-                            "Project update error:",
-                            errorData
-                        );
+        console.error(
+            "Project update error:",
+            errorData
+        );
 
-                        throw new Error(
-                            "Failed to update project."
-                        );
+        throw new Error(
+            "Failed to update project."
+        );
+    }
 
+
+    const updatedProject =
+        await response.json();
+
+
+    console.log(
+        "Project updated:",
+        updatedProject
+    );
+
+
+    // ==================================
+    // UPDATE PROJECT TEAM MEMBERS
+    // ==================================
+
+    const memberSelects =
+        document.querySelectorAll(
+            ".project-member-select"
+        );
+
+
+    // Get selected member IDs
+    const selectedMemberIds =
+        Array.from(memberSelects)
+            .map(select => Number(select.value))
+            .filter(id => id);
+
+
+    // Get existing project members
+    const membersResponse =
+        await fetch(
+            "/api/projects/members/"
+        );
+
+
+    if (!membersResponse.ok) {
+
+        throw new Error(
+            "Unable to load project members."
+        );
+    }
+
+
+    const allMembers =
+        await membersResponse.json();
+
+
+    const existingMembers =
+        allMembers.filter(
+            member =>
+                member.project ===
+                Number(editingProjectId)
+        );
+
+
+    // Delete old members
+    for (
+        const member of existingMembers
+    ) {
+
+        const deleteResponse =
+            await fetch(
+                `/api/projects/members/${member.id}/`,
+                {
+                    method: "DELETE",
+
+                    headers: {
+                        "X-CSRFToken":
+                            csrftoken
                     }
-
-
-                    const updatedProject =
-                        await response.json();
-
-
-                    console.log(
-                        "Project updated:",
-                        updatedProject
-                    );
-
-
-                    // Reset edit mode
-
-                    delete projectForm.dataset.editing;
-
-                    delete projectForm.dataset.projectId;
-
-
-                    // Restore modal title
-
-                    const title =
-                        document.querySelector(
-                            "#project-modal .modal-header h2"
-                        );
-
-                    if (title) {
-
-                        title.textContent =
-                            "Create New Project";
-
-                    }
-
-
-                    const modalDescription =
-                        document.querySelector(
-                            "#project-modal .modal-header p"
-                        );
-
-                    if (modalDescription) {
-
-                        modalDescription.textContent =
-                            "Create a workspace for your team.";
-
-                    }
-
-
-                    const submitButton =
-                        document.querySelector(
-                            "#project-form button[type='submit']"
-                        );
-
-                    if (submitButton) {
-
-                        submitButton.textContent =
-                            "Create Project";
-
-                    }
-
-
-                    projectForm.reset();
-
-                    closeProjectModalWindow();
-
-                    await loadDashboard();
-
-
-                    alert(
-                        "Project updated successfully!"
-                    );
-
-                    return;
-
                 }
+            );
 
+
+        if (!deleteResponse.ok) {
+
+            console.error(
+                "Failed to remove member:",
+                member.username
+            );
+
+        }
+
+    }
+
+
+    // Add newly selected members
+    for (
+        const userId of selectedMemberIds
+    ) {
+
+        const memberResponse =
+            await fetch(
+                "/api/projects/members/",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        "X-CSRFToken":
+                            csrftoken
+                    },
+
+                    body: JSON.stringify({
+                        project:
+                            Number(editingProjectId),
+
+                        user:
+                            userId,
+
+                        role:
+                            "member"
+                    })
+                }
+            );
+
+
+        if (!memberResponse.ok) {
+
+            const errorData =
+                await memberResponse.json();
+
+            console.error(
+                "Failed to add member:",
+                errorData
+            );
+
+            throw new Error(
+                "Project updated, but a team member could not be added."
+            );
+        }
+
+    }
+
+
+    // Reset edit mode
+    delete projectForm.dataset.editing;
+    delete projectForm.dataset.projectId;
+
+
+    // Restore modal title
+    const title =
+        document.querySelector(
+            "#project-modal .modal-header h2"
+        );
+
+    if (title) {
+
+        title.textContent =
+            "Create New Project";
+    }
+
+
+    const modalDescription =
+        document.querySelector(
+            "#project-modal .modal-header p"
+        );
+
+    if (modalDescription) {
+
+        modalDescription.textContent =
+            "Create a workspace for your team.";
+    }
+
+
+    const submitButton =
+        document.querySelector(
+            "#project-form button[type='submit']"
+        );
+
+    if (submitButton) {
+
+        submitButton.textContent =
+            "Create Project";
+    }
+
+
+    projectForm.reset();
+
+    closeProjectModalWindow();
+
+    await loadDashboard();
+
+
+    alert(
+        "Project and team members updated successfully!"
+    );
+
+    return;
+}
 
                 // ==================================
                 // CREATE NEW PROJECT
@@ -3000,6 +3245,151 @@ if (editProjectButton) {
                     "project-status"
                 ).value =
                     project.status;
+
+                    const existingMembers =
+    await loadProjectMembers(
+        currentProjectId
+    );
+
+const teamType =
+    document.getElementById(
+        "project-team-type"
+    );
+
+const teamSize =
+    document.getElementById(
+        "project-team-size"
+    );
+
+const teamSizeGroup =
+    document.getElementById(
+        "project-team-size-group"
+    );
+
+const membersGroup =
+    document.getElementById(
+        "project-members-group"
+    );
+
+const membersList =
+    document.getElementById(
+        "project-members-list"
+    );
+
+if (existingMembers.length > 0) {
+
+    teamType.value = "team";
+
+    teamSize.value =
+        existingMembers.length;
+
+    teamSizeGroup.style.display =
+        "block";
+
+    membersGroup.style.display =
+        "block";
+
+    membersList.innerHTML = "";
+
+    const usersResponse =
+        await fetch("/accounts/users/");
+
+    if (!usersResponse.ok) {
+        throw new Error(
+            "Unable to load users."
+        );
+    }
+
+    const users =
+        await usersResponse.json();
+
+    existingMembers.forEach(
+        (member, index) => {
+
+            const wrapper =
+                document.createElement(
+                    "div"
+                );
+
+            wrapper.className =
+                "form-group";
+
+            const label =
+                document.createElement(
+                    "label"
+                );
+
+            label.textContent =
+                `Team Member ${index + 1}`;
+
+            const select =
+                document.createElement(
+                    "select"
+                );
+
+            select.className =
+                "project-member-select";
+
+            select.required = true;
+
+            const emptyOption =
+                document.createElement(
+                    "option"
+                );
+
+            emptyOption.value = "";
+            emptyOption.textContent =
+                "Select member";
+
+            select.appendChild(
+                emptyOption
+            );
+
+            users.forEach(user => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    user.id;
+
+                option.textContent =
+                    user.username;
+
+                if (
+                    Number(user.id) ===
+                    Number(member.user)
+                ) {
+                    option.selected = true;
+                }
+
+                select.appendChild(
+                    option
+                );
+            });
+
+            wrapper.appendChild(label);
+            wrapper.appendChild(select);
+            membersList.appendChild(wrapper);
+        }
+    );
+
+} else {
+
+    teamType.value = "individual";
+
+    teamSize.value = 1;
+
+    teamSizeGroup.style.display =
+        "none";
+
+    membersGroup.style.display =
+        "none";
+
+    membersList.innerHTML = "";
+}
 
 
                 // Open project form

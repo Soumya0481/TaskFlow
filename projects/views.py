@@ -42,3 +42,14 @@ class ProjectMemberListCreateView(generics.ListCreateAPIView):
             )
 
         serializer.save()
+
+class ProjectMemberDetailView(
+    generics.RetrieveDestroyAPIView
+):
+    serializer_class = ProjectMemberSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return ProjectMember.objects.filter(
+            project__owner=self.request.user
+        )
