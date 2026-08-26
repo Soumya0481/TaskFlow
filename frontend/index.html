@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TaskFlow — Project Management</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-logo">T</div>
+                <span>TaskFlow</span>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="#" class="nav-item active">
+                    <span>▦</span>
+                    Dashboard
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>▣</span>
+                    Projects
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>✓</span>
+                    My Tasks
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>▤</span>
+                    Board
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>👥</span>
+                    Team
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <a href="#" class="nav-item">
+                    <span>⚙</span>
+                    Settings
+                </a>
+
+                <a href="/admin/" class="nav-item">
+                    <span>⚡</span>
+                    Admin
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Top Bar -->
+            <header class="topbar">
+
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>
+    Welcome back,
+    <span id="welcome-user-name">Soumya</span>.
+</p>
+                </div>
+
+                <div class="topbar-actions">
+
+                    <button
+    class="icon-button"
+    id="notification-button"
+    title="Notifications">
+    🔔
+</button>
+
+<div id="notification-panel" class="notification-panel">
+
+    <div class="notification-header">
+        <strong>Notifications</strong>
+        <button
+            type="button"
+            id="close-notifications">
+            ×
+        </button>
+    </div>
+
+    <div
+        id="notification-list"
+        class="notification-list">
+
+        <div class="notification-empty">
+            No new notifications.
+        </div>
+
+    </div>
+
+</div>
+<button
+    type="button"
+    class="user-profile"
+    id="user-profile-button">
+
+    <div
+        class="avatar"
+        id="user-avatar">
+        S
+    </div>
+
+    <div>
+        <strong id="user-name">
+            Soumya
+        </strong>
+
+        <span id="user-role">
+            Project Manager
+        </span>
+    </div>
+
+</button>
+
+
+<div
+    id="user-profile-menu"
+    class="user-profile-menu">
+
+    <div class="profile-menu-header">
+
+        <strong id="menu-user-name">
+            Soumya
+        </strong>
+
+        <span id="menu-user-role">
+            Project Manager
+        </span>
+
+    </div>
+
+
+    <button
+        type="button"
+        id="profile-menu-profile">
+        👤 My Profile
+    </button>
+
+
+    <button
+        type="button"
+        id="profile-menu-settings">
+        ⚙ Settings
+    </button>
+
+
+    <button
+        type="button"
+        id="profile-menu-logout">
+        🚪 Logout
+    </button>
+
+</div>
+
+                </div>
+
+            </header>
+
+
+            <!-- Dashboard -->
+            <section class="dashboard">
+
+                <div class="welcome-card">
+
+                    <div>
+                        <span class="eyebrow">PROJECT WORKSPACE</span>
+
+                        <h2>
+                            AI Project Management Platform
+                        </h2>
+
+                        <p>
+                            Manage projects, assign tasks, track progress,
+                            and collaborate with your team.
+                        </p>
+                    </div>
+
+                    <button class="primary-button">
+                        + New Task
+                    </button>
+
+                </div>
+
+
+                <!-- Statistics -->
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <span>Total Projects</span>
+                        <strong>1</strong>
+                        <small>Active workspace</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <span>Total Tasks</span>
+                        <strong>1</strong>
+                        <small>Across all projects</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <span>In Progress</span>
+                        <strong>1</strong>
+                        <small>Currently active</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <span>Completed</span>
+                        <strong>0</strong>
+                        <small>Tasks completed</small>
+                    </div>
+
+                </div>
+
+
+                <!-- Recent Tasks -->
+                <div class="section-header">
+
+                    <div>
+                        <h2>Recent Tasks</h2>
+                        <p>Your latest project activity</p>
+                    </div>
+
+                    <button class="secondary-button">
+                        View All
+                    </button>
+
+                </div>
+
+
+                <div class="task-list">
+
+                    <div class="task-row">
+
+                        <div class="task-info">
+
+                            <div class="task-status status-progress">
+                                In Progress
+                            </div>
+
+                            <div>
+                                <h3>
+                                    Build User Authentication API
+                                </h3>
+
+                                <p>
+                                    AI Project Management Platform
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="task-meta">
+
+                            <span class="priority-high">
+                                High
+                            </span>
+
+                            <div class="avatar small">
+                                S
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="projects-section" id="projects-section">
+
+    <div class="section-header">
+
+        <div>
+            <h2>Projects</h2>
+            <p>Your project workspaces</p>
+        </div>
+
+        <button
+            class="primary-button"
+            id="new-project-button">
+            + New Project
+        </button>
+
+    </div>
+
+    <div
+        class="projects-grid"
+        id="projects-grid">
+
+        <div class="projects-empty">
+            Loading projects...
+        </div>
+
+    </div>
+
+</section>
+
+            <section class="board-section">
+
+    <div class="section-header">
+
+    <div>
+        <h2>Project Board</h2>
+        <p>Track tasks across the project workflow</p>
+    </div>
+
+    <div class="board-actions">
+
+        <select
+            id="board-project-select"
+            class="board-project-select">
+
+            <option value="">
+                Loading projects...
+            </option>
+
+        </select>
+
+        <button
+            class="primary-button"
+            id="board-new-task">
+            + New Task
+        </button>
+
+    </div>
+
+</div>
+
+    <div class="kanban-board">
+
+        <div class="kanban-column">
+
+            <div class="kanban-column-header">
+                <div>
+                    <h3>To Do</h3>
+                    <span class="column-count" id="todo-count">0</span>
+                </div>
+            </div>
+
+            <div
+                class="kanban-tasks"
+                id="todo-column">
+            </div>
+
+        </div>
+
+
+        <div class="kanban-column">
+
+            <div class="kanban-column-header">
+                <div>
+                    <h3>In Progress</h3>
+                    <span class="column-count" id="progress-count">0</span>
+                </div>
+            </div>
+
+            <div
+                class="kanban-tasks"
+                id="progress-column">
+            </div>
+
+        </div>
+
+
+        <div class="kanban-column">
+
+            <div class="kanban-column-header">
+                <div>
+                    <h3>Review</h3>
+                    <span class="column-count" id="review-count">0</span>
+                </div>
+            </div>
+
+            <div
+                class="kanban-tasks"
+                id="review-column">
+            </div>
+
+        </div>
+
+
+        <div class="kanban-column">
+
+            <div class="kanban-column-header">
+                <div>
+                    <h3>Done</h3>
+                    <span class="column-count" id="done-count">0</span>
+                </div>
+            </div>
+
+            <div
+                class="kanban-tasks"
+                id="done-column">
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+        </main>
+
+    </div>
+
+    <!-- New Task Modal -->
+<div class="modal-overlay" id="task-modal">
+
+    <div class="task-modal">
+
+        <div class="modal-header">
+            <div>
+                <h2>Create New Task</h2>
+                <p>Add a task to your project.</p>
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="close-task-modal">
+                ×
+            </button>
+        </div>
+
+        <form id="task-form">
+
+            <div class="form-group">
+                <label for="task-project">Project</label>
+
+                <select id="task-project" required>
+                    <option value="">
+                        Loading projects...
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="task-title">Task Title</label>
+
+                <input
+                    type="text"
+                    id="task-title"
+                    placeholder="Enter task title"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="task-description">Description</label>
+
+                <textarea
+                    id="task-description"
+                    rows="4"
+                    placeholder="Describe the task"></textarea>
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="task-assignee">
+                        Assigned To
+                    </label>
+
+                    <select id="task-assignee">
+                        <option value="1">
+                            Soumya
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="task-priority">
+                        Priority
+                    </label>
+
+                    <select id="task-priority">
+
+                        <option value="low">Low</option>
+                        <option value="medium" selected>
+                            Medium
+                        </option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="task-status">
+                        Status
+                    </label>
+
+                    <select id="task-status">
+
+                        <option value="todo">
+                            To Do
+                        </option>
+
+                        <option value="in_progress">
+                            In Progress
+                        </option>
+
+                        <option value="review">
+                            Review
+                        </option>
+
+                        <option value="done">
+                            Done
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="task-due-date">
+                        Due Date
+                    </label>
+
+                    <input
+                        type="datetime-local"
+                        id="task-due-date">
+                </div>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="cancel-task">
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button">
+                    Create Task
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Task Details Modal -->
+<div class="modal-overlay" id="task-details-modal">
+
+    <div class="task-modal">
+
+        <div class="modal-header">
+
+            <div>
+                <span class="eyebrow">TASK DETAILS</span>
+                <h2 id="details-task-title">Task</h2>
+                <p id="details-project-name"></p>
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="close-task-details">
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="task-details-form">
+
+            <div class="form-group">
+
+                <label for="details-title">
+                    Task Title
+                </label>
+
+                <input
+                    type="text"
+                    id="details-title"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="details-description">
+                    Description
+                </label>
+
+                <textarea
+                    id="details-description"
+                    rows="5"></textarea>
+
+            </div>
+
+            <div class="comments-section">
+
+    <div class="comments-header">
+        <h3>Comments</h3>
+        <span id="comment-count">0</span>
+    </div>
+
+    <div
+        class="comments-list"
+        id="comments-list">
+
+        <div class="comments-empty">
+            No comments yet.
+        </div>
+
+    </div>
+
+    <div class="comment-form">
+
+        <textarea
+            id="new-comment"
+            rows="3"
+            placeholder="Write a comment..."></textarea>
+
+        <button
+            type="button"
+            class="primary-button"
+            id="add-comment">
+            Add Comment
+        </button>
+
+    </div>
+
+</div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="details-status">
+                        Status
+                    </label>
+
+                    <select id="details-status">
+
+                        <option value="todo">
+                            To Do
+                        </option>
+
+                        <option value="in_progress">
+                            In Progress
+                        </option>
+
+                        <option value="review">
+                            Review
+                        </option>
+
+                        <option value="done">
+                            Done
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="details-priority">
+                        Priority
+                    </label>
+
+                    <select id="details-priority">
+
+                        <option value="low">
+                            Low
+                        </option>
+
+                        <option value="medium">
+                            Medium
+                        </option>
+
+                        <option value="high">
+                            High
+                        </option>
+
+                        <option value="urgent">
+                            Urgent
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="details-assignee">
+                    Assigned To
+                </label>
+
+                <select id="details-assignee">
+
+                    <option value="1">
+                        Soumya
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="delete-task">
+                    Delete
+                </button>
+
+                <div>
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        id="cancel-task-details">
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-button">
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Create Project Modal -->
+
+<div class="modal-overlay" id="project-modal">
+
+    <div class="task-modal">
+
+        <div class="modal-header">
+
+            <div>
+                <span class="eyebrow">PROJECT</span>
+
+                <h2>Create New Project</h2>
+
+                <p>Create a workspace for your team.</p>
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="close-project-modal">
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="project-form">
+
+            <div class="form-group">
+
+                <label for="project-name">
+                    Project Name
+                </label>
+
+                <input
+                    type="text"
+                    id="project-name"
+                    placeholder="Enter project name"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="project-description">
+                    Description
+                </label>
+
+                <textarea
+                    id="project-description"
+                    rows="5"
+                    placeholder="Describe your project"
+                    required></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="project-status">
+                    Status
+                </label>
+
+                <select id="project-status">
+
+                    <option value="planning">
+                        Planning
+                    </option>
+
+                    <option value="active" selected>
+                        Active
+                    </option>
+
+                    <option value="completed">
+                        Completed
+                    </option>
+
+                    <option value="archived">
+                        Archived
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+    <label for="project-team-type">
+        Project Type
+    </label>
+
+    <select id="project-team-type">
+
+        <option value="individual">
+            Individual
+        </option>
+
+        <option value="team">
+            Team
+        </option>
+
+    </select>
+
+</div>
+
+
+<div
+    class="form-group"
+    id="project-team-size-group"
+    style="display: none;">
+
+    <label for="project-team-size">
+        Number of Team Members
+    </label>
+
+    <input
+        type="number"
+        id="project-team-size"
+        min="1"
+        max="50"
+        value="1"
+        placeholder="Enter number of members">
+
+</div>
+
+
+<div
+    class="form-group"
+    id="project-members-group"
+    style="display: none;">
+
+    <label>
+        Select Team Members
+    </label>
+
+    <div id="project-members-list"></div>
+
+</div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="cancel-project">
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button">
+                    Create Project
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Project Details Modal -->
+
+<div class="modal-overlay" id="project-details-modal">
+
+    <div class="task-modal project-details-modal">
+
+        <div class="modal-header">
+
+            <div>
+                <span class="eyebrow">PROJECT DETAILS</span>
+
+                <h2 id="project-details-name">
+                    Project
+                </h2>
+
+                <p id="project-details-description"></p>
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="close-project-details">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="project-details-content">
+
+            <div class="project-detail-card">
+
+                <span>Status</span>
+
+                <strong id="project-details-status">
+                    Active
+                </strong>
+
+            </div>
+
+
+            <div class="project-detail-card">
+
+                <span>Project ID</span>
+
+                <strong id="project-details-id">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="project-detail-card">
+
+                <span>Owner</span>
+
+                <strong id="project-details-owner">
+                    -
+                </strong>
+
+            </div>
+
+        </div>
+
+        <div class="project-detail-section">
+
+    <h3>Team Members</h3>
+
+    <div
+        id="project-detail-members"
+        class="project-detail-members">
+
+        <p class="empty-state">
+            No team members assigned.
+        </p>
+
+    </div>
+
+</div>
+
+
+        <div class="project-details-section">
+
+            <div class="section-header">
+
+                <div>
+                    <h3>Project Tasks</h3>
+                    <p>Tasks belonging to this project</p>
+                </div>
+
+            </div>
+
+            <div
+                class="project-task-list"
+                id="project-task-list">
+
+                <div class="projects-empty">
+                    No tasks found.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+    <button
+        type="button"
+        class="secondary-button"
+        id="cancel-project-details">
+        Close
+    </button>
+
+    <button
+        type="button"
+        class="secondary-button"
+        id="edit-project-details">
+        ✏️ Edit Project
+    </button>
+
+    <button
+        type="button"
+        class="danger-button"
+        id="delete-project-details">
+        🗑️ Delete Project
+    </button>
+
+</div>
+
+    </div>
+
+</div>
+
+    <script src="/static/js/app.js"></script>
+
+</body>
+</html>
