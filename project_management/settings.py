@@ -32,7 +32,9 @@ ALLOWED_HOSTS = os.environ.get(
     "127.0.0.1,localhost"
 ).split(",")
 
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com",
+]
 # Application definition
 
 INSTALLED_APPS = [
